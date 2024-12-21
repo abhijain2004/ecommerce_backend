@@ -4,7 +4,7 @@ const model3=require("./../Model/cart");
 const model4=require("./../Model/wish");
 const Person = model.Person;
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const path=require("path");
 var privateKey = fs.readFileSync(path.resolve(__dirname,"../private.key"),"utf-8");
@@ -20,7 +20,7 @@ exports.signUp = async (req, res) => {
       algorithm: "RS256",
       expiresIn: "15m",
     });
-    const hash = bcrypt.hashSync(req.body.password, 10);
+    const hash = bcrypt.hash(req.body.password, 10);
     newPerson.token = token;
     newPerson.password = hash;
     const response = await newPerson.save();
@@ -35,7 +35,7 @@ exports.signUp = async (req, res) => {
 exports.logIn = async (req, res) => {
   try {
     const doc = await Person.findOne({ email: req.body.email });
-    const isAuth = bcrypt.compareSync(req.body.password, doc.password);
+    const isAuth = bcrypt.compare(req.body.password, doc.password);
     
 
     if(isAuth){
