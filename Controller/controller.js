@@ -20,7 +20,7 @@ exports.signUp = async (req, res) => {
       algorithm: "RS256",
       expiresIn: "15m",
     });
-    const hash = bcrypt.hash(req.body.password, 10);
+    const hash = await bcrypt.hash(req.body.password, 10);
     newPerson.token = token;
     newPerson.password = hash;
     const response = await newPerson.save();
