@@ -175,4 +175,17 @@ exports.deleteCart=async (req,res)=>{
     }
 
 
+  exports.getProducts=async (req,res)=>{
+    try {
+      const products = await Product.find(); 
+      
+  
+      res.json(products); 
+    } catch (error) {
+      console.error('Error in getProducts:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+
 
